@@ -1,0 +1,90 @@
+<!--
+-- by jeneser
+-- 教务处公告,逐条获取数据，并存入数据库
+-- 数据格式整合为json
+-- 以下为以bmob做为后端存储测试示例，可自行申请bmob账号进行测试
+-->
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>教务处公告</title>
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <script type="text/javascript" src="bmob-min.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+
+  // Bmob.initialize("Application ID", "REST API Key")，这里就不方便给了;
+  Bmob.initialize("", "");
+
+  // 远程数据
+  $.get('http://localhost:1337/jwc.hpu.edu.cn/jwc/main.jsp?page=1&classid=6', function(data) {
+    // 匹配列表
+    var listContent = data.match(/\d{4}(\-|\/)\d{1,2}\1\d{1,2}(.|\n|\s)*?<\/A>/ig);
+    //匹配标题和url并放入数组
+    var listArray = listContent.toString().split("<\/A>");
+
+    //设置全局ajax，设置同步请求数据
+    //确保每次循环之前数据获取完整且已经正确存入数据库
+    $.ajaxSetup({ 
+      async : false
+    });
+    //循环输出，存入数据库
+    for (var i = 0; i < 5; i++) {
+      // 文章标题
+      var title = listArray[i].toString().match(/>.+/g).toString().replace(/>/, '');
+      // 发布时间
+      var created_at = listArray[i].toString().match(/\d{4}(\-|\/)\d{1,2}\1\d{1,2}/g).toString();
+      // 文章绝对路经
+      var url = "http://jwc.hpu.edu.cn/jwc/" + listArray[i].toString().match(/news\.jsp\?id=([0-9]+)/ig).toString();
+      //文章内容，根据获取的url再次发起请求
+      var content = '';
+
+      $.get('http://localhost:1337/' + url.replace(/http:\/\//, ''), function(data) {
+        //获取整个内容,并去掉水平线和BR等冗余内容
+        var content = data.match(/<HR class=hr>(.|\n|\s)*?<BR><BR>/ig).toString().replace(/<HR class=hr>|<BR>|<FONT(.|\n|\s)*?>|<\/FONT>|<B>|<\/B>|<B(.|\n|\s)*?>|<BR(.|\n|\s)*?>|&nbsp;|<P>(\s)<\P>|<IMG(.|\n|\s)*?(doc|zip|rar|xls)\.gif">|<DIV(.|\n|\s)*?>|<\/DIV>/ig, '');
+
+        // 拼接为json格式
+        json_data = {
+              "title": title,
+              "created_at": created_at,
+              "url": url,
+              "content": content
+            };
+        //调试信息
+        console.log("内容获取成功，等待存入数据库...");
+
+        // 存入数据库
+        // obj为bmob对象，请参阅bmob文档
+        var obj = Bmob.Object.extend("obj");
+        var obj = new obj();
+          obj.save(json_data, {
+          success: function(object) {
+            console.log("恭喜！存入成功.")
+          },
+          error: function(model, error) {
+            console.log("出错了：数据可能已经存在.")
+          }
+        });
+
+        console.log(json_data);
+        console.log(url);
+        console.log(created_at);
+        console.log(title);
+
+
+      }).fail(function (e) {
+        console.log("获取文章内容失败！");
+      });
+    }
+
+  }).fail(function (e) {
+    console.log("请求错误！");
+  });
+
+  </script>
+</body>
+
+</html>

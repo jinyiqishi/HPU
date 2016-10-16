@@ -1,0 +1,50 @@
+<!--
+-- by jeneser
+-- 教务公告-通知公告-列表页，默认获取一页数据
+-- URL：http://jwc.hpu.edu.cn/jwc/main.jsp?classid=6
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<title>教务公告 列表页</title>
+</head>
+<body id="body">
+	<textarea id="cont">
+		获取内容...
+	</textarea> 
+	<button id="butt">点我获取</button>
+	<script type="text/javascript">
+		var cont = document.getElementById("body");
+		var butt = document.getElementById("butt");
+		butt.addEventListener("click", fetch)
+		function fetch (argument) {
+			var ajax = new XMLHttpRequest();
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == 4 && ajax.status == 200) {
+					var response = ajax.responseText;
+					//匹配所有
+					var hole = response.match(/<img src="image\/doc2\.gif">(.|\n|\s)*?<\/a>/ig)
+
+					//匹配标题和url并放入数组,使用时循环输出，这里只演示一条数据
+					var sortData = hole.toString().split("<img src=\"image/doc2.gif\">");
+					//返回标题示例
+					var title = sortData[1].toString().match(/[\u4e00-\u9fa5]+/g);
+					//返回URL示例
+					var url = "http://jwc.hpu.edu.cn/jwc/" + sortData[1].toString().match(/news\.jsp\?id=([0-9]+)/g).toString();
+					//返回带连接的标题
+					var urlAndTitle = "<a href=" + url +">"+ title + "</a>";
+					alert(url);
+					cont.innerHTML = urlAndTitle;
+					alert(1);
+				}
+			};
+			ajax.open("get", "http://cors.itxti.net/?jwc.hpu.edu.cn/jwc/main.jsp?page=1&classid=6", true);
+			ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=gb2312");
+			ajax.send();
+
+		}
+	</script>
+</body>
+</html>

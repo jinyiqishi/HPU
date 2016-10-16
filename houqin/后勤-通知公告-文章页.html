@@ -1,0 +1,51 @@
+<!--
+-- by jeneser
+-- 后勤-通知公告-文章页
+-- URL：http://repair.hpu.edu.cn/dsh/Pchome/newsInfoDesc/ba0e970e-cb54-4b15-beff-a68000ae7cd8
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<title>后勤-通知公告-文章页</title>
+</head>
+<body id="body">
+	<textarea id="cont">
+		获取内容...
+	</textarea> 
+	<button id="butt">点我获取</button>
+	<script type="text/javascript">
+		var cont = document.getElementById("body");
+		var butt = document.getElementById("butt");
+		butt.addEventListener("click", fetch)
+		function fetch (argument) {
+			var ajax = new XMLHttpRequest();
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == 4 && ajax.status == 200) {
+					var response = ajax.responseText;
+					// //匹配标题
+					var title = response.match(/<h2>(.|\n|\s)*?<\/h2>/ig).toString().replace(/<h2>|(<\/h2>)|(\s)/ig, '').toString();
+					//匹配时间和作者
+					var time = response.match(/\d{4}(\/)\d{1,2}\1\d{1,2}\s\d{1,2}(:)\d{1,2}\2\d{1,2}/g).toString();
+
+					var author = response.match(/[\u4e00-\u9fa5]{2}[\uff1a][\u4e00-\u9fa5]{2,4}/).toString();
+					//匹配文章内容
+					var content = response.match(/<div class="Newstxt">(.|\n|\s)*?<\/div>/ig).toString();
+
+					console.log(title);
+					console.log(time);
+					console.log(author);
+					console.log(content);
+					cont.innerHTML = title + time + author + content;
+                    console.log(1);
+				}
+			};
+			ajax.open("get", "http://localhost:1337/repair.hpu.edu.cn/dsh/Pchome/newsInfoDesc/ba0e970e-cb54-4b15-beff-a68000ae7cd8", true);
+			ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=gb2312");
+			ajax.send();
+
+		}
+	</script>
+</body>
+</html>

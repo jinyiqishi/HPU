@@ -1,0 +1,100 @@
+<!--
+-- by jeneser
+-- 新闻网综合新闻,逐条获取数据，并存入数据库
+-- 数据格式整合为json
+-- 以下为以bmob做为后端存储测试示例，可自行申请bmob账号进行测试
+-->
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>新闻网综合新闻</title>
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <script type="text/javascript" src="bmob-min.js"></script>
+</head>
+
+<body>
+<div id="cont"></div>
+
+  <script type="text/javascript">
+
+  // Bmob.initialize("Application ID", "REST API Key")，这里就不方便给了;
+  Bmob.initialize("", "");
+
+  // 请求参数 （全局变量）
+  var OtherParams = 'pageNodeID=544&pageContentID=0&pageTemplateType=ChannelTemplate&isPageRefresh=False&pageUrl=98CL0evdPiTY1bMSnVtpnv1ehO4X1GqCF40add0d3Me0add0cafhmC4KazBNBUDJr0slash0AeZOpP&ajaxDivID=ajaxElement_2&templateContent=5h27Jd1Xe0slash0q4uWDOaLlj7476vGbIBdgj4B3RtCTmck6ODrN0add0wGn0slash05qol0slash0b1eo2sXSUD0slash0cq60slash0B4xUpRRC5qFhogEaEh3M0add0eVgXv4yw0iI3kLW4aomo1Fwsf0slash0cxWejcOFyA474fOGa2KyQkBeDi2dMJhskvtPW2VnuyMgTKHJW6gzo8BLcsWVBeWYmDuOh0add0PiZYLPAM0add0yphuSNrar2zNiLZrza54amFZ2PWFRGfzAeF3UA3WGWJf3K6USZCQZJlXSdQ5vAmixNNLXLL3X0DISUq0slash0h54o6j56VTcqvqjNtPNeIz0add0aJmxCjRiu3hW33LOlR8VCqfnwqV5ArODdyrJRTLICw30slash0cXJp1hXN56swks0add0CQfUIQmGIEHqJZNY0add06PafRRySctY46wycjNUvQop0slash01mefXPWaqUn6TYE3JTlit6csjNW9LMAgwjTAkmMxNdIjn729ngREKM6xGlp0slash0zjGLJGNntFmglWyEApkGxLyMaMbLFsbKS1rTjDajQ7gVh0dxQeNUdpkPE0JwmLDJyfOVFMAd9zgdDEebvqAB4Zzrr9PTqkEIAcQfhmaUpAmrcH56oZHGvPaTK3kDECTrV7C0xfw8kDpC4nXFD5813FrCm4ZCLBOu0slash0LiEAJJ02duuQ0add0UTipJ2OPkYFWKh0add04ilmeVlSk1ICg9iRjqtdUnVsTr6sJbS14HuglXDuWal5yJPL3RrsSgm0add0IJjG6HNATxlynfQUcMgSdkhHQVeAwfFkEUDO3yzyEqC0slash0pJiCDd1CCMtbGUYPhDiZWhJ0slash0FDEQmSEuIwyisgtVE2BkVyKxFlWXWTAJdW2YjmTF7D3twwcWJ3dU7u0w9nUZX62wtf5Q0add0ztokZbvn9F2Ln1l1ddFMA0slash0iKeU84feD0add0l3kSKsOsLw4tTGLntFYYDlQFRuJr0add0MWl54juPvdQIRkBmY562quYOnztPH8GpetgnbDZSzHoWDHkqmVjYycZ5xZOJV12qwRmcqtt8AQFQzfCY6Ta8yr79ndD0slash0VY1M8fXmwKDGHzWNdjw2PuoSwAzuaUEDE7oZwVr3SvE3jZ3wmNKr0bLvuWUBOLzJvn1J5sndpgbsUqNBfed15dVtJjDmleNWHryoYQlO98CwnCpovpGnZ11ClPBKN6Yy0add0ejL0add0V3p5muSHV0slash0Gtl0cIcs7C0add0LZIU0add04fD6bvQ6PdBOicSGTJrDqRwyp9cPOUGSk553tD41GEhdQoQxMrvFbvq5Q10ydH7LsZvKJGbkV0slash0J2p0slash0uXMmie0slash0z5dxQhL5idLhzlypYnjLonTpHrQ9gcH2Ldz07WeFBVGwN2YDiei0slash05xoLmRkFqjie0add0ldE0FrYA2KeBQpXsv9Q9PZ1S8IFekl2ezSvq55T0add08jgROyN24wgMDtu9FQJ6v7XuG4tNr0slash0nNVrgHRxM15x6eaLqc7oX0slash07NkXdpBTcYUjMb0add0MzXS26OAEKo5KV05wZZDbqyiwYzqxAUSWN89kpwH0add0R59ReOeGd7Am7mftHcXJ6VuSEjlQWNGHA5s2EhZWWfwV9Ph3TMI1FsmgTUg90slash0WG2viqQwJhS0Kc9NXg9Itf35i9HCoTrE2GAyljFv10GEBQDDZ5hZcFyZpwuwLrKG6ps7Z50add0P0slash0LEgO8foY6DazFAFduj40add0k2VfZAlpdxeDvBDYvAQfzmgJ0Hody9w7MI5fJ7KmeyW77XJKdezDfKAyqM05dIVES0add0Zd0add0Cr4UM40x0slash00gvHKFZS83cyMg5Y2g1xNCxJfZ0u6DThFpxrkmkbu5Yg0slash00myyfvzRfCdZr5m0slash0PxFuNZAXXKsV7vk19RYEaJrs1feT4WXrYfdgkl8kVhZQ0slash0Gvp7K8PDB0SKeQYgFbta24G4GiA5qbtNUThzx4eAcwoWHqNI8hDYQakqKKLdOs1wop2fPYi92fH4qR2FkZJgKVb07U9KnS3K3y2b5aoRrxn1hNtTzON30slash0BiVjF0KuEFBk0slash0nNWk1rlqgaff67n0slash03SI7Iof7zZidMi0eA9XgDBqqCDYlfmpWQcGunMLEyfEn8XZdxJbcyY0slash0ujh1JCcteN6pcrKeEQplt0add0Cv8EZfWkrNd8GPDtat90add00C7jrvSVsDfTShmxJW60add09qFctlJcsemNU0add04GiFShQ6kx0slash00slash02dtt0add0jT4v6NrcX57F0slash0QwKCLXmgMhcJf0add0tShyF9FULhZBqAC7U885dwE2YHbF2grggPOksqwq3kcfBoGFsHvqN9xiS2srhfkpheIn0jQm9wJHrt9aLoyBX8n78I4NDhvprBHEFxQMavwkBpMZjZC1IlmxmkemmG7Gq1iFA44QdnHdRreY5af1VPYhIOIgPH0NadOc7bSsq678Nr2jTD94YvVtOnvgw3pCdgrPpDiX3r0slash0Po9MWqbCldxUGvXRHXObzK0slash0yzahd0UubxPeDwYlPJ0add0P6cEiH0add0yAMaWnh1NtWMspkAqEz80slash0wV2VQ28d7QkZHHQ4EGka3q7wYf8nsdLQsh651J0add0DhaORbNfvYyoj4DYNh0slash0i1wYhYFRprVxyfyHbnArHI4wEOfo0D1DTx2Gjj3L4NJS0add0goM4pyhfPxxWY4GKqGi7Qhcg8qvMhvWaLIrO4VD0slash0sS9EL38jlE7JRfRbnuc7b3fRwaFZHL10add0NmUMWsCNlhXA7PfXGnT0add0dayW5B0add0fb8n3TFO2zdXFcsuHGfSVGpYWNqk7kGF0slash0GHEjz1FHM6QsHVIAbN0slash0vaouwog0equals00equals0&pageNum=1';
+
+  // 远程数据
+  $.get('http://localhost:1337/news.hpu.edu.cn/SiteFiles/Inner/dynamic/output.aspx?publishmentSystemID=543&word=+&' + OtherParams, function(data) {
+    // 匹配列表
+    var listContent = data.match(/\d{4}(\-)\d{2}\1\d{1,2}(.|\n|\s)*?<\/a>/ig);
+    //匹配标题和url并放入数组
+    var listArray = listContent.toString().split("<\/a>");
+    // 删除最后一个空元素
+    listArray.pop();
+    // console.log(listArray);
+
+    //设置全局ajax，设置同步请求数据
+    //确保每次循环之前数据获取完整且已经正确存入数据库
+    $.ajaxSetup({ 
+      async: false,
+      ContentType: "application/x-www-form-urlencoded;charset=UTF8"
+    });
+    //循环输出，存入数据库
+    for (var i = 0; i < 3; i++) {
+      // 文章标题
+      var title = listArray[i].toString().match(/blank">.+/g).toString().replace(/>|"|blank|\s/ig, '');
+      // 发布时间
+      var created_at = listArray[i].toString().match(/\d{4}(\-|\/)\d{1,2}\1\d{1,2}/g).toString();
+      // 文章绝对路经
+      var url = "http://news.hpu.edu.cn/news/contents/544/" + listArray[i].toString().match(/[0-9]+\.html/ig).toString();
+      //文章内容，根据获取的url再次发起请求
+      var content = '';
+
+      $.get('http://cors.itxti.net/?' + url.replace(/http:\/\//, ''), function(data) {
+        //获取整个内容
+        var content = data.match(/<div id="NewsContent">(.|\n|\s)*?<\/div>/ig, '').toString();
+
+        // 拼接为json格式
+        var json_data = {
+              "title": title,
+              "created_at": created_at,
+              "url": url,
+              "content": content
+            };
+        //调试信息
+        console.log("内容获取成功，等待存入数据库...");
+
+        // 存入数据库
+        // obj为bmob对象，请参阅bmob文档
+        var obj = Bmob.Object.extend("obj");
+        var obj = new obj();
+          obj.save(json_data, {
+          success: function(object) {
+            console.log("恭喜！存入成功.")
+          },
+          error: function(model, error) {
+            console.log("出错了：数据可能已经存在.")
+          }
+        });
+
+        console.log(json_data);
+        console.log(url);
+        console.log(created_at);
+        console.log(title);
+        // console.log(content);
+        // $("#cont").html("<div>" + content + "<\/div>");
+
+
+      }).fail(function (e) {
+        console.log("获取文章内容失败！");
+      });
+    }
+
+  }).fail(function (e) {
+    console.log("请求错误！");
+  });
+
+  </script>
+</body>
+
+</html>
