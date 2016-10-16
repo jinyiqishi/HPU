@@ -29,7 +29,8 @@ http://news.hpu.edu.cn
 
 ## 测试开发
 如果你使用JavaScript进行开发，请注意：你可能需要解决跨域请求问题
-建议使用：corsproxy
+
+建议使用：corsproxy 请访问：https://github.com/gr2m/CORS-Proxy
 
 `npm install -g corsproxy`
 
@@ -40,11 +41,14 @@ http://news.hpu.edu.cn
 示例中使用bmob后端云作为数据库，如果你对此感兴趣，请访问http://www.bmob.cn/
 当然你可不用它，测试时注释掉代码就可以了。
 
+如果你使用PHP cURL进行开发，你也可以尝试用guzzle进行开发
+
 ## 加入我们
 
 请git本仓库代码，作为参考，
 你不必按照示例中的方法，我们相信你有你的想法！
 你可以将错误或建议发表在issues中。
+当然你也可以发邮件给我@jeneser
 
 ## 开源协议
 MIT
