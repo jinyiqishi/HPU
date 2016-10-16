@@ -1,28 +1,30 @@
 # hpu
-hpu开源项目
+hpu开源项目--新闻公告爬虫
 
 不论你是写JavaScript，还是PHP，亦或是Python，开心就好，happy hacking！
 
 ## 这是什么？
 
 这是一个爬虫示例（javaScript），主要抓取学校官网的新闻公告等内容
+
 这里是hpu app 的分支，这里并不限制你的编码方式，最终代码将整合到主项目中，为理工人提供新鲜的资讯服务。
 
 ## 示例URL
 
-教务公告-通知公告-列表页
+- 教务公告-通知公告-列表页
 -- URL：http://jwc.hpu.edu.cn/jwc/main.jsp?classid=6
-教务公告-通知公告-文章页
+
+- 教务公告-通知公告-文章页
 -- URL：http://jwc.hpu.edu.cn/jwc/news.jsp?id=1128
 
-后勤-通知公告-列表页
+- 后勤-通知公告-列表页
 -- URL：http://repair.hpu.edu.cn/dsh/Pchome/GetNewsListbySub?RowCount=59&PageIndex=1&PageSize=17&LgType=1&PID=0101
-后勤-通知公告-文章页
+- 后勤-通知公告-文章页
 -- URL：http://repair.hpu.edu.cn/dsh/Pchome/newsInfoDesc/ba0e970e-cb54-4b15-beff-a68000ae7cd8
 
-新闻网-综合新闻-列表页
+- 新闻网-综合新闻-列表页
 http://news.hpu.edu.cn
-新闻网 综合新闻-文章页
+- 新闻网 综合新闻-文章页
 -- URL：http://news.hpu.edu.cn/news/contents/544/118105.html
 
 ## 测试开发
